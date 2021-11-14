@@ -75,20 +75,18 @@ public class Server {
         @Override
         public void run() {
             OutputStream outputStream;
-            String msgReply = "Hello from Server, you are #";
 
             try {
                 outputStream = hostThreadSocket.getOutputStream();
                 PrintStream printStream = new PrintStream(outputStream);
 
                 while (true) {
-                    printStream.println("==============");
+                    //printStream.println("==============");
                     printStream.println(activity.x_axis);
                     printStream.println(activity.y_axis);
                 }
 
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 message += "Something wrong! " + e.toString() + "\n";
             }
@@ -126,7 +124,6 @@ public class Server {
             }
 
         } catch (SocketException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             ip += "Something Wrong! " + e.toString() + "\n";
         }
