@@ -14,6 +14,8 @@ public class Server {
     MainActivity activity;
     ServerSocket serverSocket;
     String message = "";
+    // Specify the port
+    // Should keep the same as client in RPi
     static final int socketServerPORT = 8080;
 
     public Server(MainActivity activity) {
@@ -31,7 +33,6 @@ public class Server {
             try {
                 serverSocket.close();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -51,25 +52,13 @@ public class Server {
                     // block the call until connection is created and return
                     // Socket object
                     Socket socket = serverSocket.accept();
-                    count++;
-                    message += "#" + count + " from "
-                            + socket.getInetAddress() + ":"
-                            + socket.getPort() + "\n";
-
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            activity.msg.setText(message);
-                        }
-                    });
 
                     SocketServerReplyThread socketServerReplyThread =
-                            new SocketServerReplyThread(socket, count);
+                            new SocketServerReplyThread(socket);
                     socketServerReplyThread.run();
 
                 }
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -78,33 +67,25 @@ public class Server {
     private class SocketServerReplyThread extends Thread {
 
         private Socket hostThreadSocket;
-        int cnt;
 
-        SocketServerReplyThread(Socket socket, int c) {
+        SocketServerReplyThread(Socket socket) {
             hostThreadSocket = socket;
-            cnt = c;
         }
 
         @Override
         public void run() {
             OutputStream outputStream;
-            String msgReply = "Hello from Server, you are #" + cnt;
+            String msgReply = "Hello from Server, you are #";
 
             try {
                 outputStream = hostThreadSocket.getOutputStream();
                 PrintStream printStream = new PrintStream(outputStream);
-                printStream.print(msgReply);
-                printStream.close();
 
-                message += "replayed: " + msgReply + "\n";
-
-                activity.runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        activity.msg.setText(message);
-                    }
-                });
+                while (true) {
+                    printStream.println("==============");
+                    printStream.println(activity.x_axis);
+                    printStream.println(activity.y_axis);
+                }
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block

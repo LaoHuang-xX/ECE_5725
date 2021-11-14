@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     Server server;
     TextView infoip, msg;
+    String x_axis;
+    String y_axis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent){
-        Log.d(TAG, "OnSensorChanged: X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
+        //Log.d(TAG, "OnSensorChanged: X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
+        x_axis = "X Position: " + sensorEvent.values[0];
+        y_axis = "Y Position: " + sensorEvent.values[1];
     }
 
     @Override
