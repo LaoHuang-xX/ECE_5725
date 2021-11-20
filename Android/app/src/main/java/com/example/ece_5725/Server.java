@@ -81,12 +81,13 @@ public class Server {
                 PrintStream printStream = new PrintStream(outputStream);
 
                 while (true) {
-                    //printStream.println("==============");
-                    printStream.println(activity.x_axis);
-                    printStream.println(activity.y_axis);
+                    printStream.println("==============");
+                    printStream.println("==============");
+                    sleep(1000);
+                    //printStream.println(activity.x_axis);
+                    //printStream.println(activity.y_axis);
                 }
-
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
                 message += "Something wrong! " + e.toString() + "\n";
             }
