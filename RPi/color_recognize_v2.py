@@ -1,3 +1,10 @@
+#
+# ECE 5725 final project
+# RPi Robot Mover
+# Fall 2021
+# Authors: Xu Hai (xh357), Yaqun Niu (yn232)
+#
+
 import cv2
 import colorList
 import picamera
@@ -8,45 +15,16 @@ import threading
 import numpy as np
 from piecamera import PieCamera
 import pygame.mixer
-capture = cv2.VideoCapture("video_5.mp4")
-# capture = cv.VideoCapture(0)
 
 
-
-# from picamera.array import PiRGBArray
-# from picamera import PiCamera
-# import time
-# import cv2
-#
-# # initialize the camera and grab a reference to the raw camera capture
-# camera = PiCamera()
-# camera.resolution = (640, 480)
-# camera.framerate = 32
-# rawCapture = PiRGBArray(camera, size=(640, 480))
-#
-# # allow the camera to warmup
-# time.sleep(0.1)
-#
-# # capture frames from the camera
-# for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-#     # grab the raw NumPy array representing the image, then initialize the timestamp
-#     # and occupied/unoccupied text
-#     image = frame.array
-#
-#     # show the frame
-#     cv2.imshow("Frame", image)
-#     key = cv2.waitKey(1) & 0xFF
-#
-#     # clear the stream in preparation for the next frame
-#     rawCapture.truncate(0)
-
-
+# Capture the main color in front of the camera for one frame
 def get_color(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     maxsum = -100
     color = None
     color_dict = colorList.getColorList()
 
+    # Image process to get 
     for d in color_dict:
         mask = cv2.inRange(hsv, color_dict[d][0], color_dict[d][1])
         cv2.imwrite(d + '.jpg', mask)
@@ -63,31 +41,27 @@ def get_color(frame):
     return color
 
 
-
-
-
+# Get the hsv of the main color in front of the camera during the period
 def get_hsv():
+    # Load color hsv from a pre-built color list
     color_dict = colorList.getColorList()
     camera = PieCamera()
     key = -1
-    #global result_1
-    result_1="None"
-    #global i
-    i=0
-    #global same_color
+    result_1 = "None"
+    i = 0
     same_color = True
-    # while (True):
+
+    # Play the sound to inform the user
+    # that the robot starts to capture the color
     pygame.mixer.init()
     pygame.mixer.music.load(os.getcwd() + "/sound/test.wav")
     pygame.mixer.music.play(-1)
     time.sleep(1)
     pygame.mixer.music.stop()
+
+    # Make sure the robot get the main color during the period
     while key == -1:
-        # ret, frame = capture.read()
         ret, frame = camera.read()
-        # cv2.imshow('frame', frame)
-        # key = cv2.waitKey(1)
-        # and result != "white" and result != "black"
         if ret is True and same_color:
             result = get_color(frame)
             if result == result_1:
@@ -95,6 +69,9 @@ def get_hsv():
                 if i >= 50:
                     same_color = False
                     print(result)
+
+                    # Play the sound to inform the user
+                    # that the robot has captured the color
                     pygame.mixer.music.load(os.getcwd() + "/sound/success.wav")
                     pygame.mixer.music.play(-1)
                     time.sleep(2)
@@ -104,34 +81,7 @@ def get_hsv():
                 i = 0
             result_1 = result
 
+    # Close the camera to release the resource
     camera.close()
     return result
-
-
-
-
-
-# if __name__ == '__main__':
-#
-#     reslt,color_list = get_hsv()
-#     print(reslt)
-#     print(color_list)
-    # while (True):
-    #     ret, frame = capture.read()
-    #     # cv2.imshow("Frame",frame)
-    #     if ret is True and same_color:
-
-    # print(get_hsv())
-
-            # if result == result_1:
-            #     continue
-            # print(result)
-            #
-            # result_1 = result
-
-    # print(get_color(frame))
-
-
-
-
 

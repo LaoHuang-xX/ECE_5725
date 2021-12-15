@@ -1,3 +1,15 @@
+#
+# ECE 5725 final project
+# RPi Robot Mover
+# Fall 2021
+# Authors: Xu Hai (xh357), Yaqun Niu (yn232)
+#
+
+# Face recognition function
+# The efficiency is too low
+# Not used in the current project
+# Further optimization needed
+
 import face_recognition
 import time
 import cv2
@@ -17,6 +29,7 @@ class Face:
     def get_lock(self):
         return self.lock
 
+    # Load known faces
     def load(self):
         p = path.Path(self.usr_dir)
         for f in p.glob('*.jpg'):
@@ -25,11 +38,10 @@ class Face:
                 usr_face_encoding = face_recognition.face_encodings(usr_image)[0]
                 self.known_face_encodings.append(usr_face_encoding)
 
+    # Recogniza faces
     def detect_faces(self):
         self.lock = True
 
-        # Get a reference to webcam #0 (the default one)
-        #video_capture = cv2.VideoCapture(0)
         video_capture = PieCamera()
 
         process_this_frame = True

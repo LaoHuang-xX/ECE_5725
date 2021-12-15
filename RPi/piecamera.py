@@ -1,3 +1,10 @@
+#
+# ECE 5725 final project
+# RPi Robot Mover
+# Fall 2021
+# Authors: Xu Hai (xh357), Yaqun Niu (yn232)
+#
+
 import time
 from picamera.array import PiRGBArray
 from picamera import PiCamera

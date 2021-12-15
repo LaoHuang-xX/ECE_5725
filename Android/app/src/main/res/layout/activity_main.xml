@@ -8,6 +8,29 @@
     android:padding="30sp"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Switch to Auto"
+
+
+        />
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="353dp"
+        android:layout_height="185dp"
+        android:layout_marginTop="57dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="104dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.888" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

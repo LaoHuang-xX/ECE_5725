@@ -1,7 +1,14 @@
+#
+# ECE 5725 final project
+# RPi Robot Mover
+# Fall 2021
+# Authors: Xu Hai (xh357), Yaqun Niu (yn232)
+#
+
+# Known color list
+
 import numpy as np
 import collections
-
-
 
 
 def getColorList():

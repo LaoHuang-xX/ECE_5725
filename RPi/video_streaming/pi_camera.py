@@ -1,5 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+#
+# ECE 5725 final project
+# RPi Robot Mover
+# Fall 2021
+# Authors: Xu Hai (xh357), Yaqun Niu (yn232)
+#
+
 import time
 import io
 import threading

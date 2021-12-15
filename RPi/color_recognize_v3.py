@@ -1,3 +1,15 @@
+#
+# ECE 5725 final project
+# RPi Robot Mover
+# Fall 2021
+# Authors: Xu Hai (xh357), Yaqun Niu (yn232)
+#
+
+
+# Test version to use face recognition
+# But the efficiency of the face recognition is too low
+# Further optimization needed
+
 import os
 import cv2
 import colorList
@@ -44,6 +56,7 @@ def get_hsv():
     
     check = 0
 
+    # Face Recognition
     #load_faces()
 
     #while face_recog(camera):
@@ -72,6 +85,7 @@ def get_hsv():
     return result
 
 '''
+# Load known faces
 def load_faces():
     p = path.Path(os.getcwd() + "/reg_usr")
     global known_face_encodings
@@ -83,6 +97,7 @@ def load_faces():
             known_face_encodings.append(usr_face_encoding)
 
 
+# Recognize faces
 def face_recog(camera):
     global known_face_encodings
     lock = True

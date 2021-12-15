@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Video transformation
+
 import os
 import time
 from time import sleep
