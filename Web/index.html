@@ -46,9 +46,12 @@
             <li><a href="#intro">Introduction</a></li>
             <li><a href="#obj">Project Objective</a></li>
             <li><a href="#design">Design</a></li>
-            <li><a href="#drawings">Drawings</a></li>
             <li><a href="#testing">Testing</a></li>
             <li><a href="#result">Result</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+            <li><a href="#Future Improvement">Future Improvement</a></li>
+            <li><a href="#Team & Work Dsitribution">Team & Work Dsitribution</a></li>
+            <li><a href="#Appendix">Appendix</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -63,7 +66,7 @@
 
       
 
-      <hr>
+      <br>
       <div class="center-block">
           <iframe width="640" height="360" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
           <h4 style="text-align:center;">Demonstration Video</h4>
@@ -73,7 +76,8 @@
 
       <div style="text-align:center;">
               <h2>Introduction</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+              <p style="text-align: left;padding: 0px 30px;">This is the final project of Corenll University ECE 5725 Embeded Operating System. The project is about a Raspberry Pi robot mover with a manual mode and an auto mode. In the manual mode, the user can control the robot with an Android mobile phone and watch the real-time video via the Pi camera mounted on the front of the robot. When the user switches to the auto mode, the robot will be able to follow the user by capturing and remembering the user' shoes' color. The project aims to make people's lives more convenient and keep social distance under this epidemic environment, like helping people to carry heavy goods or assisting people to deliver objects.</p><br>
+              <p style="text-align: left;padding: 0px 30px;">The content below will give a detailed description of the project, mainly including the design and the testing of the project. Issues during the development will be discussed, and future improvements will be listed. In addtion, all reference and resources of this project will be included, and the whole project code can be found at the end of this website.</p>
       </div>
 
     <hr id='obj'>
@@ -85,9 +89,9 @@
           <div class="col-md-8" style="font-size:18px;">
           <h2>Project Objective:</h2>
           <ul>
-              <li>some important objectives.some important objectives.some important objectives.some important objectives.</li>
-                <li>some other important objectives.</li>
-            <li>some not-that-important objectives.</li>
+              <li>The robot can completely support the manual mode on an Android mobile phone with a real-time video transmission and can switch to the auto mode smoothly.</li>
+                <li>The robot can accurately follow the user with maintaining an appropriate distance.</li>
+            <li>The robot can play the music to show its status.</li>
           </ul>
           </div>
       </div>
@@ -96,84 +100,1578 @@
 
       <div style="text-align:center;">
               <h2>Design</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
-      </div>
+              <p style="text-decoration: underline;text-align: left;font-size: 26px;font-weight: 700;">Hardware</p>
+              <p style="text-align: left;padding: 0px 30px;">Figure 1 shows the hardware system we envisioned at the beginning. The camera is used for the face recognition. The motor controller is used to control the speed and rotation direction of the wheel. Besides, users can use the physical stop button in the PiTFT to stop the robot. The speaker is used to play the audio to show the robot's status. The bluetooth adapter is used to connect with mobile phone to locate the position of user’s phone. The tray is used to carry some objects. And the camera is used for face recognition and video display. </p><br>
+              <div class="row">
+                <div class="column">
+                  <img class="img-rounded" src="pics/init_hardware.png" alt="init_hardware" width="360" height="320">
+                  <figcaption>Figure 1: The initial hardware design</figcaption>
+                </div>
+                <div class="column">
+                  <img class="img-rounded" src="pics/final_hardware.png" alt="final_hardware" width="360" height="320">
+                  <figcaption>Figure 2: The final hardware design</figcaption>
+                </div>
+              </div><br>
+              <p style="text-align: left;padding: 0px 30px;">Figure 2 shows the hardware system we finally adopted. Different designs from before include that the bluetooth adapter is abandoned. Because positioning via Bluetooth is not very accurate and the signal transmitted through Bluetooth may be disturbed by the external environment. In addition, the Bluetooth signal can pass through obstacles, which will cause the robot to be unable to avoid obstacles independently, resulting in collision. We also abandoned the tray because the power output of the motor is not very large and the speed of the robot will be very slow if some objects are placed on the tray. We also used camera to do color recognition and tracking using OpenCV and abandoned face recognition because the efficiency of face recognition program in raspberry pie system is relatively low.</p>
 
-    <hr id='drawings'>
+              <p style="text-decoration: underline;text-align: left;font-size: 26px;font-weight: 700;">Software</p>
+              <p style="text-align: left;padding: 0px 30px;">Compared with the hardware part, the software design is more complex, so we divide this part into several sections. The general software flowchart is shown in Figure 3 below.</p>
+              <img class="img-rounded" src="pics/general_soft.png" alt="ge_so" width="480" height="220">
+              <figcaption>Figure 3: The general software flowchart</figcaption><br>
 
-      <div style="text-align:center;">
-              <h2>Drawings</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+              <p style="text-align: left;font-size: 22px;font-weight: 700;">General Android Interface</p>
+              <p style="text-align: left;padding: 0px 30px;">The Android interface is built by Android studio, which is the official integrated development environment (IDE) for developing Android applicationsIn the app, and it is built on the basis of IntelliJ idea. In addition to IntelliJ's powerful code editor and developer tools, Android studio also provides more functions that can improve the efficiency of Android application construction. Android studio is faster to start and respond than eclipse. Gradle is a new build tool that combines the advantages of ant and Maven. It is great in terms of configuration, compilation and packaging. The editor of Android studio is very intelligent. In addition to absorbing the advantages of eclipse + ADT, it also comes with multi device real-time preview. Hence, it is a strong tool for Android development.</p>
+              <p style="text-align: left;padding: 0px 30px;">As for the interface, the middle area is for displaying the real-time video. In addition, the buttons in the upper left corner are used to switch between auto and manual modes and exit the program. After the Android program is started, it is first in the manual mode, and the button content displays ‘SWITCH TO AUTO’. After clicking the button, the robot enters the automatic mode, and the button turns red and the button content ‘QUIT’ is displayed at the same time. After clicking the button again, the Android program will exit in about two seconds.  Figure 4 and 5 show the interface of the app. Figure 4 shows the manual mode interface, and Figure 5 shows the auto mode interface. The tutorial of Android studio can be found <a href="https://developer.android.com/training/basics/firstapp">here</a>.</p>
+              <div class="row">
+                <div class="column">
+                  <img class="img-rounded" src="pics/android_interface_manual.jpg" alt="android_manual" width="200" height="360">
+                  <figcaption>Figure 4: The manual mode Android interface</figcaption>
+                </div>
+                <div class="column">
+                  <img class="img-rounded" src="pics/android_interface_auto.jpg" alt="android_auto" width="200" height="360">
+                  <figcaption>Figure 5: The auto mode Android interface</figcaption>
+                </div>
+              </div><br>
+              <p style="text-align: left;padding: 0px 30px;">We configured the phone's accelerometer and added the <code>SensorManager</code> and <code>Sensor</code> variables to the <code>MainActivity</code> class in Android Studio. We configured the <code>SensorManager</code> and <code>Sensor</code> to get information from the phone's accelerometer and chose to use the rotation vector accelerometer. Then we added <code>onAccuracyChanged</code> and <code>onSensorChanged</code> in the <code>MainActivity</code> file. And the data transformation is realzied by Socket.</p>
+
+              <p style="text-align: left;font-size: 22px;font-weight: 700;">Socket Connection</p>
+              <p style="text-align: left;padding: 0px 30px;">In order to realize the wireless communication between the Android and our RPi, we applied Socket to create a simple server on Android and a client on our RPi by following the <a href="https://realpython.com/python-sockets/">tutorial</a>. Socket is an implementation of the "open-read / write-close" mode. The server and the client maintain a "file" respectively. After the connection is established and opened, we can write content to the file for the other party to read or read the other party's content. The file is closed at the end of communication. Socket ensures the communication between different computers, that is, network communication. To make sure the stability of the connection, we specified the protocol to be TCP by the variable <code>SOCK_STREAM</code> and indicated the Internet address family to be IPv4 by the variable <code>AF_INET</code>. The Figure 6 below shows the connection-oriented TCP sequence diagram.</p>
+              <img class="img-rounded" src="pics/tcp.png" alt="tcp" width="260" height="340">
+              <figcaption>Figure 6: The connection-oriented TCP sequence diagram</figcaption><br>
+              <p style="text-align: left;padding: 0px 30px;">However, different from the tutorial, we operated the data analysis in our client, and launch corresponding programs based on commands sent from the server. In addition, we applied a infinity <code>while</code> in our server to keep sending commands to our client to make sure the robot can operate required actions on time. More details can be found in our <a href="#client">client</a> and <a href="#server">server</a> code.</p>
+
+              <p style="text-align: left;font-size: 22px;font-weight: 700;">Real-time Video Transmission</p>
+              <p style="text-align: left;padding: 0px 30px;">First, we connected our Raspberry Pi camera module following this <a href="https://thepihut.com/blogs/raspberry-pi-tutorials/16021420-how-to-install-use-the-raspberry-pi-camera">tutorial</a>. We inserted the Camera Module ribbon cable into the Camera Module port and ensured that the silver connectors facing the HDMI port . Then we started up our Raspberry Pi and ran <code>sudo raspi-config</code> to enable the camera option in Interfaces section. After enabling the camera, we ran <code>sudo reboot</code> to reboot the Raspberry Pi.</p>
+              <p style="text-align: left;padding: 0px 30px;">In order to use the Raspberry Pi camera to get the livestreaming video, we used Socket communication to stream the live video feed from Pi camera to a website <code>http://Raspberry_Pi_IP_Address:8050</code>. Port 8050 was selected to avoid conflicts with other users or resources. We used ‘Webview’ module in Android Studio to display the content of the website on the app. In this way, the user can use the app to watch the video in real time to better control the robot motion.</p>
+
+              <p style="text-align: left;font-size: 22px;font-weight: 700;">Manual Mode Controller</p>
+              <p style="text-align: left;padding: 0px 30px;">The general logic of the controller is modified based on Lab 3. After reading the XYZ coordinates transmitted from the Android program, we limited the value range of XYZ coordinates, so that the robot can make corresponding actions when the mobile phone is at different angles and positions. Before setting the coordinate range, we first put the mobile phone in different positions, observed the XYZ value corresponding to the mobile phone in different positions, and then set the later limited range according to the recorded data. We did not set different coordinate ranges adjacent to each other, so as to make the difference between different operations larger and have better discrimination. In addition, we found that left turn and right turn only need to be distinguished according to the value of X, and going forward or backward need to be distinguished by combining the values of Y and Z.</p>
+              <p style="text-align: left;padding: 0px 30px;">Apart from limiting the value of XYZ, we also added a flag to each decision condition. If the robot is in the same state continuously, the program will only perform the corresponding state once, which will reduce the load of the system and improve the performance of the system.</p>
+              <p style="text-align: left;padding: 0px 30px;">Figure 7 below shows the accelerometer axis information and how the robot makes corresponding actions according to the range of XYZ coordinates.</p>
+              <img class="img-rounded" src="pics/manual_controller.png" alt="manual_controller" width="420" height="340">
+              <figcaption>Figure 7: The manual mode controller logic and the accelerometer axis information</figcaption><br>
+
+              <p style="text-align: left;font-size: 22px;font-weight: 700;">Auto Mode Color Recognition and Tracking</p>
+              <p style="text-align: left;padding: 0px 30px;">The functions of this sections are built mainly based on <a href="https://opencv.org/">OpenCV</a>. OpenCV is a cross platform computer vision library. OpenCV can be used to develop real-time image processing, computer vision and pattern recognition programs. It is committed to real-world real-time applications. Its execution speed has been significantly improved through optimized C code writing, and faster processing speed can be obtained by purchasing Intel's IPP high-performance multimedia functions. OpenCV is widely used in the following fields like human computer interaction, object recognition, image segmentation and face recognition, etc.</p>
+              <p style="text-align: left;padding: 0px 30px;">For the color recognition, we first define a color list which stored the HSV range values of several colors. Then for each frame obtained from PI camera, we generate mask images of different colors and filter out other colors through image binarization and image dilation. Then we calculate which color corresponds to the largest area using <code>cv2.contourArea()</code>, and we recognize it as the main color of this frame image. When the main color remains unchanged for 10 seconds, we will end the color recognition program and use this color as the color of shoes we will track later.</p>
+              <p style="text-align: left;padding: 0px 30px;">For color tracking, we first receive the color returned from the color recognition file. Then we extract the pixels in line with the color HSV range for each frame obtained by the camera, and use <code>cv2.findContours()</code> to find the outline of the object that matches the color. </p>
+              <p style="text-align: left;padding: 0px 30px;">After the object with this color is detected in the view of the robot, if the area of object is greater than <code>1000</code>, the robot will do the normal following operation. We use <code>cv2.contourArea()</code> to calculate the area of the object, and set different thresholds to make the robot perform different actions. When the area is within a certain range, we keep the robot stationary. When the area exceeds a certain threshold, the car will go forward at full speed. When it is less than a certain threshold, the car will go backward at full speed. In addition, we calculate the x coordinate of the center point of the object to make the robot turn left and right, so that the center point of the object is always kept within the range close to the center area. Figure 8 shows how does the robot operate tracking based on the area of the target. Figure 9 shows the whole process of automatic mode. The face recognition part is missed because we found that the efficiency of the method is too low, so we just deleted it from our present project. However, in the future, we will explore ways to improve the efficiency and add it to our project.</p>
+              <div class="row">
+                <div class="column">
+                  <img class="img-rounded" src="pics/color_track.jpg" alt="tracking" width="560" height="320">
+                  <figcaption>Figure 8: Tracking system based on the area</figcaption>
+                </div>
+                <div class="column">
+                  <img class="img-rounded" src="pics/auto.png" alt="auto_controller" width="560" height="320">
+                  <figcaption>Figure 9: The logic of the auto mode controller</figcaption>
+                </div>
+              </div><br>
+
+              <p style="text-align: left;font-size: 22px;font-weight: 700;">Face Recognition</p>
+              <p style="text-align: left;padding: 0px 30px;">We planned to use the <a href="http://dlib.net/">Dlib</a> library to develop our face recognition system. It is a C + + Open Source Toolkit containing machine learning algorithms. Dlib can help us create many complex machine learning software to help solve practical problems. At present, Dlib has been widely used in industry and academic fields, including robots, embedded devices, mobile phones and large-scale high-performance computing environments.</p>
+              <p style="text-align: left;padding: 0px 30px;">The first task that we perform is detecting faces in the image(photograph) or video stream. Now we know that the exact coordinates/location of the face, so we extract this face for further processing. After we crop out the face from the image, we extract specific features from it. Here we are going to see how to use face embeddings to extract these features of the face. When we train the neural network, the network learns to output similar vectors for faces that look similar. Then we pass all the images in our data to this pre-trained network to get the respective embeddings and save these embeddings in a file for the next step. We have face embeddings for each face in our data saved in a file, the next step is to recognize a new image that is not in our data. Hence the first step is to compute the face embedding for the image using the same network we used earlier and then compare this embedding with the rest of the embeddings that we have. We recognize the face if the generated embedding is closer or similar to any other embedding. The Figure 10 below shows the result of our face recognition function on our local computers.</p>
+              <img class="img-rounded" src="pics/face_recog.png" alt="face_recog" width="360" height="260">
+              <figcaption>Figure 10: The result of the face recognition function on the local computer</figcaption><br>
+              <p style="text-align: left;padding: 0px 30px;">However, when we try to use Dlib to do face recognition, we encountered some problems. The face recognition program can run correctly on the computer and realize the corresponding functions. But when we run the face recognition program in the raspberry pie system, it takes about a few minutes to start, and the running speed is very slow. We tried to run the program using parallel computing, but the performance did not improve significantly. In addition, we tried to run the program alone on raspberry pie, but the startup time was not shortened. In the future, we will continue to explore other solutions.</p>
       </div>
 
     <hr id='testing'>
 
       <div style="text-align:center;">
               <h2>Testing</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+              <p style="text-align: left;padding: 0px 30px;">In the process of our project, we operated our tests based on the following steps. First, after completing the code of a program, we will test it locally to eliminate the bugs After that, we will go to the laboratory and run the program in the raspberry pie system for unit testing to test the performance and performance of the program. After that, we conduct integration test to integrate each module and eliminate some problems. Finally, we conduct system test and interaction test to ensure that the robot can successfully complete various functions in the overall process. In this way, we successfully found and solved multiple issues during the development, and finally made our project work perfectly. Figure 11 and 12 show how we test the color recognize program on the laptop. Figure 11 is that the object with the specific color can be recognized if we add an area limit. Figure 12 shows that the program can be affected by noise if we do not set a limitation filter.</p>
+              <div class="row">
+                <div class="column">
+                  <img class="img-rounded" src="pics/good_color.png" alt="good" width="480" height="320">
+                  <figcaption>Figure 11: The good result with a limitation filter</figcaption>
+                </div>
+                <div class="column">
+                  <img class="img-rounded" src="pics/bad_color.png" alt="bad" width="480" height="320">
+                  <figcaption>Figure 12: Noise when there is no limitation filter</figcaption>
+                </div>
+              </div><br>
+              <p style="text-align: left;padding: 0px 30px;">When we ran our Android application to do the Pi camera video streaming test, an error called <code>ERR_CLEARTEXT_NOT_PERMITTED</code> happened. Then we added <code>android:usesCleartextTraffic="true"</code> flag in the <code>AndroidManifest.xml</code> file under the application block and fixed the problem. Besides, we chose port <code>8001</code>, but occasionally web content cannot be displayed on the app. Later, we found that port <code>8001</code> is easy to be occupied, so we changed it to port <code>8050</code>.</p>
+              <p style="text-align: left;padding: 0px 30px;">In addition, when we tested manual mode, at first, we set the speed of the robot forward and backward, left turn and right turn to full speed, but later we found that the speed of left turn and right turn should not be too high. In fact, the speed of left turn and right turn should be relatively slow, so we set it to half speed.</p>
+              <p style="text-align: left;padding: 0px 30px;">And when we tested automatic mode, we encountered some problems. We didn't filter out too small color areas, so the program will recognize small color areas as the objects we want. Besides, we found that when the coordinates of the center point of the object are outside the set range, the robot cannot turn left or right in time. Then we remove the flag in the left turn and right turn decision conditions to improve the priority of these two operations and successfully solved this problem. When we performed color recognition and tracking, the error of ‘Pi camera out of resources’ occurred. The reason is that we did not close Pi camera resources after color recognition, so it conflicted with the subsequent color tracking. At the beginning, we controlled the car to turn left and right by limiting the X coordinates of the left and right boundaries of the object, but we found that in the actual scene, the left and right boundaries of the object are easy to exceed Pi camera's field of vision, so we changed the judgment condition to the X coordinate value of the center point of the object.</p>
+              <p style="text-align: left;padding: 0px 30px;">When we were doing system testing and interaction testing, we encountered some problems. When we manipulated the robot to turn left or right in manual mode, the robot did not make corresponding action and remained stationary. Later, we found that the battery was too low. After we replaced the new battery, the car returned to normal.</p>
       </div>
 
     <hr id='result'>
 
       <div style="text-align:center;">
               <h2>Result</h2>
-              <p style="text-align: left;padding: 0px 30px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lorem nulla, consectetur at leo vel, pretium bibendum nisl. Cras blandit quam a enim ultrices, eu convallis enim posuere. Donec eleifend enim sed purus consectetur, vitae cursus lectus varius. Vivamus consectetur felis nec est venenatis posuere. Phasellus vitae aliquet erat. In laoreet lacinia mollis. Quisque iaculis nisl fermentum pharetra lobortis. Donec rhoncus dui sem, ac molestie leo tristique vel. Phasellus in nibh feugiat, fringilla lectus in, elementum magna. Etiam quis dui condimentum, tempus ex in, dapibus est. Cras ut congue augue. Donec ac enim ex. Ut id tristique risus, vel porttitor quam. Sed ultricies enim eu nibh porttitor, vel sodales enim feugiat. Fusce volutpat venenatis magna ac ultrices. Curabitur eget urna ut nulla mattis convallis non eu diam.</p>
+              <p style="text-align: left;padding: 0px 30px;">At first, we start the robot program using computer and open the app on the mobile phone. At this time, the robot will be in manual mode and the real-time video returned by Pi camera will be displayed in the app. When we place the mobile phone vertically, the robot will enter the stop state, and play the safe driving guidelines. After playing the audio, we can change the angle and position of the mobile phone to control the robot to move forward and backward at full speed or turn left and right at half speed. Click the 'SWITCH TO AUTO' button on the app, and the robot will enter the automatic mode. After entering the automatic mode, the user first places the shoes in front of Pi camera. After staying for 10 seconds, the robot will remember the color of the shoes. Then the user can move the shoes away and appear in the front field of vision of the robot. The robot will track the user's shoes according to the color just recognized. When the user's shoes are beyond the field of vision of the Pi camera, The robot will turn left and right until the target is rediscovered. When the user moves forward, the robot moves forward. When the user is too close to the robot, the robot will move backward. When the user's shoes deviate to the right or left boundary in the Pi camera field of view, the robot will turn right or left to keep the center point of the shoes within the specific area of Pi camera. Click the ‘QUIT’ button on the app again, the program will exit in two seconds, and the robot will stop at the same time.</p>
+              <p style="text-align: left;padding: 0px 30px;">We successfully completed the objectives listed in the proposal as scheduled, and further optimized some functions. However, due to the low performance of face recognition program in raspberry pie system, we have not integrated it into our project for the time being. Our program can run smoothly on the computer, and the code eliminates all bugs and problems. In the future, we will explore how to improve the performance of face recognition program on raspberry pie system and integrate it into our project.</p>
+      </div>
+    
+      <hr id='conclusion'>
+
+      <div style="text-align:center;">
+              <h2>Conclusion</h2>
+              <p style="text-align: left;padding: 0px 30px;">Generally, we have achieved nearly every target we built at the beginning. Our project includes Raspberry Pi robot and mobile app. The user can control the robot on the mobile phone app. At first, the robot will be in manual mode. The user can watch the real-time video in the app and control the movement of the robot by changing the position and angle of the mobile phone. After the user switches to automatic mode, the robot will recognize the color of the user's shoes and follow it. After that, the user can use the app to exit the robot program.</p>
+              <p style="text-align: left;padding: 0px 30px;">There are some functions that don't work. Face recognition program cannot work very well because the efficiency of face recognition program in raspberry pie system is relatively low. Besides, positioning via Bluetooth is not very accurate and the signal transmitted through Bluetooth may be disturbed by the external environment. The real-time frames obtained by Pi camera cannot be directly transmitted to Android App due to its related limitations.</p>
+              <p style="text-align: left;padding: 0px 30px;">In this final project, we learned how to use Android studio to create an app and realize the desired functions. In addition, we learned about socket communication and how to use OpenCV for face recognition, color recognition and color tracking. More importantly, we learned how to start from scratch and complete the whole project step by step after determining the theme and goal of a project, and exercised our hands-on ability and problem-solving ability.</p>
       </div>
 
-    <hr>
+    <hr id='Future Improvement'>
+
+      <div style="text-align:center;">
+              <h2>Future Improvement</h2>
+              <p style="text-align: left;padding: 0px 30px;">In the future, this project could be improved on by implementing a few more objectives. Parallel computing will be introduced into our project to optimize performance and improve running speed. This will give better play to the underlying parallel hardware, because serial programs will waste computing resources. Parallel programs have advantages in multi-core CPU systems. For example, when IO operations are blocked, the CPU can turn to execute other threads. </p>
+              <p style="text-align: left;padding: 0px 30px;">The face recognition program will be improved to enable it to start and run in a shorter time on the Raspberry Pi system. We may build a deep learning network to realize face recognition, improve the accuracy of the network through a large number of training data, and find ways to deploy it in the Raspberry Pi system</p>
+              <p style="text-align: left;padding: 0px 30px;">In addition, we will add more voice prompts to improve the user's interactive experience. In this way, users can know whether their shoes have been recognized. And it can also increase the interest and entertainment of this project.</p>
+              <p style="text-align: left;padding: 0px 30px;">We will also explore more recognition and following methods besides color tracking, so that the robot can track the correct target more accurately without being affected by other pedestrians and objects.</p>
+      </div>
+
+    <hr id='Team & Work Distribution'>
 
     <div class="row" style="text-align:center;">
-          <h2>Work Distribution</h2>
-          <div style="text-align:center;">
-              <img class="img-rounded" src="pics/group.jpg" alt="Generic placeholder image" style="width:80%;">
-              <h4>Project group picture</h4>
-          </div>
-          <div class="col-md-6" style="font-size:16px">
-              <img class="img-rounded" src="pics/a.png" alt="Generic placeholder image" width="240" height="280">
-              <h3>Rick</h3>
-              <p class="lead">netid@cornell.edu</p>
-              <p>Designed the overall software architecture (Just being himself).
-          </div>
-          <div class="col-md-6" style="font-size:16px">
-              <img class="img-rounded" src="pics/b.png" alt="Generic placeholder image" width="240" height="280">
-              <h3>Morty</h3>
-              <p class="lead">netid@cornell.edu</p>
-              <p>Tested the overall system.
-          </div>
+      <h2>Team & Work Distribution</h2>
+      <div style="text-align:center;">
+          <img class="img-rounded" src="pics/group.jpg" alt="Generic placeholder image" style="width:80%;">
+          <h3>Project group picture</h4><br>
       </div>
+      <div class="col-md-6" style="font-size:16px">
+          <img class="img-rounded" src="pics/a.png" alt="Generic placeholder image" width="240" height="280">
+          <h3>Yaqun Niu</h3>
+          <p>Cornell ECE MEng '22
+          <p class="lead"><a href="mailto: yn232@cornell.edu">yn232@cornell.edu</a></p>
+          <ul style="text-align: left;">
+            <li>Generated the real-time video transmission</li>
+            <li>Built manual mode and auto mode controllers</li>
+            <li>Developed the color recognition system</li>
+            <li>Developed the audio system</li>
+            <li>Built the website</li>
+          </ul>
+      </div>
+      <div class="col-md-6" style="font-size:16px">
+          <img class="img-rounded" src="pics/b.png" alt="Generic placeholder image" width="240" height="280">
+          <h3>Xu Hai</h3>
+          <p>Cornell ECE MEng '22
+          <p class="lead"><a href="mailto: xh357@cornell.edu">xh357@cornell.edu</a></p>
+          <ul style="text-align: left;">
+            <li>Designed and built the overall hardware and software architecture</li>
+            <li>Built the Android server and the RPi client</li>
+            <li>Tested and optimized controllers</li>
+            <li>Developed the face recognition function</li>
+            <li>Built the website</li>
+          </ul>
+      </div>
+  </div>
 
-    <hr>
+
+    <hr id='Appendix'>
+
+      <div style="text-align:center;">
+              <h2>Appendix</h2>
+      </div>
       <div style="font-size:18px">
           <h2>Parts List</h2>
           <ul>
-              <li>Raspberry Pi $35.00</li>
-              <li>Raspberry Pi Camera V2 $25.00</li>
-              <a href="https://www.adafruit.com/product/1463"><li>NeoPixel Ring - $9.95</li></a>
-              <li>LEDs, Resistors and Wires - Provided in lab</li>
+              <a href="https://www.amazon.com/LoveRPi-Raspberry-Computer-Heatsinks-4GB/dp/B07WHZW881/ref=sr_1_4?keywords=Raspberry+Pi+4&qid=1639624881&sr=8-4"><li>Raspberry Pi $35.00</li></a>
+              <a href="https://www.amazon.com/Raspberry-Pi-Camera-Module-Megapixel/dp/B01ER2SKFS"><li>Raspberry Pi Camera V2 $25.00</li></a>
+              <a href="https://www.amazon.com/Antrader-Motor-Shaft-Arduino-Smart/dp/B07DDC3ZBK/ref=sr_1_24?keywords=DC%2Bmotor&qid=1639624971&sr=8-24&th=1"><li>DC Motor * 2 $4.00</li></a>
+              <a href="https://www.amazon.com/JBL-Clip-Portable-Bluetooth-Speaker/dp/B00KH632RK/ref=sr_1_50?keywords=jbl+bluetooth+speaker+circle&qid=1639625087&sr=8-50"><li>JBL Bluetooth Speaker $49.99</li></a>
+              <a href="https://www.amazon.com/Adafruit-2423-320x240-Capacitive-Touchscreen/dp/B01HN0LL2A/ref=sr_1_7?keywords=PiTFT&qid=1639625201&sr=8-7"><li>PiTFT 320x240 2.8 $44.99</li></a>
           </ul>
-          <h3>Total: $69.95</h3>
+          <h3>Total: $158.98</h3>
       </div>
       <hr>
       <div style="font-size:18px">
           <h2>References</h2>
           <a href="https://picamera.readthedocs.io/">PiCamera Document</a><br>
-          <a href="http://www.micropik.com/PDF/SG90Servo.pdf">Tower Pro Servo Datasheet</a><br>
+          <a href="http://dlib.net/">Dlib Library</a><br>
           <a href="http://getbootstrap.com/">Bootstrap</a><br>
           <a href="http://abyz.co.uk/rpi/pigpio/">Pigpio Library</a><br>
           <a href="https://sourceforge.net/p/raspberry-gpio-python/wiki/Home/">R-Pi GPIO Document</a><br>
-
+          <a href="https://www.journaldev.com/9333/android-webview-example-tutorial">Android WebView</a><br>
+          <a href="https://blog.miguelgrinberg.com/post/video-streaming-with-flask">Video Streaming</a><br>
+          <a href="https://www.geeksforgeeks.org/multiple-color-detection-in-real-time-using-python-opencv/">Color Recognition</a><br>
+          <a href="https://www.pyimagesearch.com/2015/03/30/accessing-the-raspberry-pi-camera-with-opencv-and-python/">Pi Camera</a><br>
+          <a href="https://developer.android.com/training/basics/firstapp">Android Studio</a><br>
+          <a href="https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html">OpenCV</a><br>
+          <a href="https://skovira.ece.cornell.edu/student-projects/">Past Students' Awesome Projects and Prof. Joe Skovira & TAs' Effective Help</a><br>
       </div>
 
     <hr>
 
-      <div class="row">
+      <div class="row" style="font-size:18px">
               <h2>Code Appendix</h2>
-              <pre><code>
-// Hello World.c
-int main(){
-  printf("Hello World.\n");
-}
-              </code></pre>
+              <a href="https://github.com/LaoHuang-xX/ECE_5725">Please see our GitHub repo for more details!</a><br><br>
+              
+              <a href="#server">Server.java - Android server</a><br>
+              <a href="#client">client.py - RPi client</a><br>
+              <a href="#pwm">pwm_hw_channel.py - Manual mode controller</a><br>
+              <a href="#color">color_recognize_v2.py - Auto mode color capturer</a><br>
+              <a href="#draw">draw_box_3.py - Auto mode controller</a><br><br>
+
+              <p class="code_name" id="server">Server.java</p>
+              <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #888888">/*</span>
+<span style="color: #888888">    ECE 5725 final project</span>
+<span style="color: #888888">    RPi Robot Mover</span>
+<span style="color: #888888">    Fall 2021</span>
+<span style="color: #888888">    Authors: Xu Hai (xh357), Yaqun Niu (yn232)</span>
+<span style="color: #888888">*/</span>
+
+<span style="color: #008800; font-weight: bold">package</span> com<span style="color: #333333">.</span><span style="color: #0000CC">example</span><span style="color: #333333">.</span><span style="color: #0000CC">ece_5725</span><span style="color: #333333">;</span>
+
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.io.IOException</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.io.OutputStream</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.io.PrintStream</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.net.InetAddress</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.net.NetworkInterface</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.net.ServerSocket</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.net.Socket</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.net.SocketException</span><span style="color: #333333">;</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">java.util.Enumeration</span><span style="color: #333333">;</span>
+
+<span style="color: #008800; font-weight: bold">public</span> <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">Server</span> <span style="color: #333333">{</span>
+    MainActivity activity<span style="color: #333333">;</span>
+    ServerSocket serverSocket<span style="color: #333333">;</span>
+    String message <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;&quot;</span><span style="color: #333333">;</span>
+    <span style="color: #888888">// Specify the port</span>
+    <span style="color: #888888">// Should keep the same as client in RPi</span>
+    <span style="color: #008800; font-weight: bold">static</span> <span style="color: #008800; font-weight: bold">final</span> <span style="color: #333399; font-weight: bold">int</span> socketServerPORT <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">8080</span><span style="color: #333333">;</span>
+
+    <span style="color: #008800; font-weight: bold">public</span> <span style="color: #0066BB; font-weight: bold">Server</span><span style="color: #333333">(</span>MainActivity activity<span style="color: #333333">)</span> <span style="color: #333333">{</span>
+        <span style="color: #008800; font-weight: bold">this</span><span style="color: #333333">.</span><span style="color: #0000CC">activity</span> <span style="color: #333333">=</span> activity<span style="color: #333333">;</span>
+        Thread socketServerThread <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> Thread<span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> SocketServerThread<span style="color: #333333">());</span>
+        socketServerThread<span style="color: #333333">.</span><span style="color: #0000CC">start</span><span style="color: #333333">();</span>
+    <span style="color: #333333">}</span>
+
+    <span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">int</span> <span style="color: #0066BB; font-weight: bold">getPort</span><span style="color: #333333">()</span> <span style="color: #333333">{</span>
+        <span style="color: #008800; font-weight: bold">return</span> socketServerPORT<span style="color: #333333">;</span>
+    <span style="color: #333333">}</span>
+
+    <span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">onDestroy</span><span style="color: #333333">()</span> <span style="color: #333333">{</span>
+        <span style="color: #008800; font-weight: bold">if</span> <span style="color: #333333">(</span>serverSocket <span style="color: #333333">!=</span> <span style="color: #008800; font-weight: bold">null</span><span style="color: #333333">)</span> <span style="color: #333333">{</span>
+            <span style="color: #008800; font-weight: bold">try</span> <span style="color: #333333">{</span>
+                serverSocket<span style="color: #333333">.</span><span style="color: #0000CC">close</span><span style="color: #333333">();</span>
+            <span style="color: #333333">}</span> <span style="color: #008800; font-weight: bold">catch</span> <span style="color: #333333">(</span>IOException e<span style="color: #333333">)</span> <span style="color: #333333">{</span>
+                e<span style="color: #333333">.</span><span style="color: #0000CC">printStackTrace</span><span style="color: #333333">();</span>
+            <span style="color: #333333">}</span>
+        <span style="color: #333333">}</span>
+    <span style="color: #333333">}</span>
+
+    <span style="color: #008800; font-weight: bold">private</span> <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">SocketServerThread</span> <span style="color: #008800; font-weight: bold">extends</span> Thread <span style="color: #333333">{</span>
+
+        <span style="color: #333399; font-weight: bold">int</span> count <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span><span style="color: #333333">;</span>
+
+        <span style="color: #555555; font-weight: bold">@Override</span>
+        <span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">run</span><span style="color: #333333">()</span> <span style="color: #333333">{</span>
+            <span style="color: #008800; font-weight: bold">try</span> <span style="color: #333333">{</span>
+                <span style="color: #888888">// Create the socket connection with the specified port</span>
+                serverSocket <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> ServerSocket<span style="color: #333333">(</span>socketServerPORT<span style="color: #333333">);</span>
+
+                <span style="color: #008800; font-weight: bold">while</span> <span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">true</span><span style="color: #333333">)</span> <span style="color: #333333">{</span>
+                    <span style="color: #888888">// Block the call until connection gets built</span>
+                    Socket socket <span style="color: #333333">=</span> serverSocket<span style="color: #333333">.</span><span style="color: #0000CC">accept</span><span style="color: #333333">();</span>
+
+                    SocketServerReplyThread socketServerReplyThread <span style="color: #333333">=</span>
+                            <span style="color: #008800; font-weight: bold">new</span> <span style="color: #0066BB; font-weight: bold">SocketServerReplyThread</span><span style="color: #333333">(</span>socket<span style="color: #333333">);</span>
+                    socketServerReplyThread<span style="color: #333333">.</span><span style="color: #0000CC">run</span><span style="color: #333333">();</span>
+
+                <span style="color: #333333">}</span>
+            <span style="color: #333333">}</span> <span style="color: #008800; font-weight: bold">catch</span> <span style="color: #333333">(</span>IOException e<span style="color: #333333">)</span> <span style="color: #333333">{</span>
+                e<span style="color: #333333">.</span><span style="color: #0000CC">printStackTrace</span><span style="color: #333333">();</span>
+            <span style="color: #333333">}</span>
+        <span style="color: #333333">}</span>
+    <span style="color: #333333">}</span>
+
+    <span style="color: #008800; font-weight: bold">private</span> <span style="color: #008800; font-weight: bold">class</span> <span style="color: #BB0066; font-weight: bold">SocketServerReplyThread</span> <span style="color: #008800; font-weight: bold">extends</span> Thread <span style="color: #333333">{</span>
+
+        <span style="color: #008800; font-weight: bold">private</span> Socket hostThreadSocket<span style="color: #333333">;</span>
+
+        SocketServerReplyThread<span style="color: #333333">(</span>Socket socket<span style="color: #333333">)</span> <span style="color: #333333">{</span>
+            hostThreadSocket <span style="color: #333333">=</span> socket<span style="color: #333333">;</span>
+        <span style="color: #333333">}</span>
+
+        <span style="color: #555555; font-weight: bold">@Override</span>
+        <span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">run</span><span style="color: #333333">()</span> <span style="color: #333333">{</span>
+            OutputStream outputStream<span style="color: #333333">;</span>
+
+            <span style="color: #008800; font-weight: bold">try</span> <span style="color: #333333">{</span>
+                outputStream <span style="color: #333333">=</span> hostThreadSocket<span style="color: #333333">.</span><span style="color: #0000CC">getOutputStream</span><span style="color: #333333">();</span>
+                PrintStream printStream <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">new</span> PrintStream<span style="color: #333333">(</span>outputStream<span style="color: #333333">);</span>
+
+                <span style="color: #888888">// Keep transferring coordinate information to the client</span>
+                <span style="color: #888888">// Also transfer signal to switch the mode</span>
+                <span style="color: #008800; font-weight: bold">while</span> <span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">true</span><span style="color: #333333">)</span> <span style="color: #333333">{</span>
+                    printStream<span style="color: #333333">.</span><span style="color: #0000CC">println</span><span style="color: #333333">(</span>activity<span style="color: #333333">.</span><span style="color: #0000CC">x_axis</span> <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;=&quot;</span> <span style="color: #333333">+</span> activity<span style="color: #333333">.</span><span style="color: #0000CC">y_axis</span> <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;=&quot;</span> <span style="color: #333333">+</span> activity<span style="color: #333333">.</span><span style="color: #0000CC">z_axis</span> <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;=&quot;</span> <span style="color: #333333">+</span> activity<span style="color: #333333">.</span><span style="color: #0000CC">j</span> <span style="color: #333333">+</span>  <span style="background-color: #fff0f0">&quot; \n&quot;</span><span style="color: #333333">);</span>
+                    <span style="color: #888888">// Decrease the client workload</span>
+                    sleep<span style="color: #333333">(</span><span style="color: #0000DD; font-weight: bold">1000</span><span style="color: #333333">);</span>
+                <span style="color: #333333">}</span>
+            <span style="color: #333333">}</span> <span style="color: #008800; font-weight: bold">catch</span> <span style="color: #333333">(</span>IOException <span style="color: #333333">|</span> InterruptedException e<span style="color: #333333">)</span> <span style="color: #333333">{</span>
+                e<span style="color: #333333">.</span><span style="color: #0000CC">printStackTrace</span><span style="color: #333333">();</span>
+                message <span style="color: #333333">+=</span> <span style="background-color: #fff0f0">&quot;Something wrong! &quot;</span> <span style="color: #333333">+</span> e<span style="color: #333333">.</span><span style="color: #0000CC">toString</span><span style="color: #333333">()</span> <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;\n&quot;</span><span style="color: #333333">;</span>
+            <span style="color: #333333">}</span>
+
+            activity<span style="color: #333333">.</span><span style="color: #0000CC">runOnUiThread</span><span style="color: #333333">(</span><span style="color: #008800; font-weight: bold">new</span> Runnable<span style="color: #333333">()</span> <span style="color: #333333">{</span>
+
+                <span style="color: #555555; font-weight: bold">@Override</span>
+                <span style="color: #008800; font-weight: bold">public</span> <span style="color: #333399; font-weight: bold">void</span> <span style="color: #0066BB; font-weight: bold">run</span><span style="color: #333333">()</span> <span style="color: #333333">{</span>
+                    activity<span style="color: #333333">.</span><span style="color: #0000CC">msg</span><span style="color: #333333">.</span><span style="color: #0000CC">setText</span><span style="color: #333333">(</span>message<span style="color: #333333">);</span>
+                <span style="color: #333333">}</span>
+            <span style="color: #333333">});</span>
+        <span style="color: #333333">}</span>
+
+    <span style="color: #333333">}</span>
+
+    <span style="color: #008800; font-weight: bold">public</span> String <span style="color: #0066BB; font-weight: bold">getIpAddress</span><span style="color: #333333">()</span> <span style="color: #333333">{</span>
+        String ip <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;&quot;</span><span style="color: #333333">;</span>
+        <span style="color: #008800; font-weight: bold">try</span> <span style="color: #333333">{</span>
+            Enumeration<span style="color: #333333">&lt;</span>NetworkInterface<span style="color: #333333">&gt;</span> enumNetworkInterfaces <span style="color: #333333">=</span> NetworkInterface
+                    <span style="color: #333333">.</span><span style="color: #0000CC">getNetworkInterfaces</span><span style="color: #333333">();</span>
+            <span style="color: #008800; font-weight: bold">while</span> <span style="color: #333333">(</span>enumNetworkInterfaces<span style="color: #333333">.</span><span style="color: #0000CC">hasMoreElements</span><span style="color: #333333">())</span> <span style="color: #333333">{</span>
+                NetworkInterface networkInterface <span style="color: #333333">=</span> enumNetworkInterfaces
+                        <span style="color: #333333">.</span><span style="color: #0000CC">nextElement</span><span style="color: #333333">();</span>
+                Enumeration<span style="color: #333333">&lt;</span>InetAddress<span style="color: #333333">&gt;</span> enumInetAddress <span style="color: #333333">=</span> networkInterface
+                        <span style="color: #333333">.</span><span style="color: #0000CC">getInetAddresses</span><span style="color: #333333">();</span>
+                <span style="color: #008800; font-weight: bold">while</span> <span style="color: #333333">(</span>enumInetAddress<span style="color: #333333">.</span><span style="color: #0000CC">hasMoreElements</span><span style="color: #333333">())</span> <span style="color: #333333">{</span>
+                    InetAddress inetAddress <span style="color: #333333">=</span> enumInetAddress
+                            <span style="color: #333333">.</span><span style="color: #0000CC">nextElement</span><span style="color: #333333">();</span>
+
+                    <span style="color: #008800; font-weight: bold">if</span> <span style="color: #333333">(</span>inetAddress<span style="color: #333333">.</span><span style="color: #0000CC">isSiteLocalAddress</span><span style="color: #333333">())</span> <span style="color: #333333">{</span>
+                        ip <span style="color: #333333">+=</span> <span style="background-color: #fff0f0">&quot;Server running at : &quot;</span>
+                                <span style="color: #333333">+</span> inetAddress<span style="color: #333333">.</span><span style="color: #0000CC">getHostAddress</span><span style="color: #333333">();</span>
+                    <span style="color: #333333">}</span>
+                <span style="color: #333333">}</span>
+            <span style="color: #333333">}</span>
+
+        <span style="color: #333333">}</span> <span style="color: #008800; font-weight: bold">catch</span> <span style="color: #333333">(</span>SocketException e<span style="color: #333333">)</span> <span style="color: #333333">{</span>
+            e<span style="color: #333333">.</span><span style="color: #0000CC">printStackTrace</span><span style="color: #333333">();</span>
+            ip <span style="color: #333333">+=</span> <span style="background-color: #fff0f0">&quot;Something Wrong! &quot;</span> <span style="color: #333333">+</span> e<span style="color: #333333">.</span><span style="color: #0000CC">toString</span><span style="color: #333333">()</span> <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;\n&quot;</span><span style="color: #333333">;</span>
+        <span style="color: #333333">}</span>
+        <span style="color: #008800; font-weight: bold">return</span> ip<span style="color: #333333">;</span>
+    <span style="color: #333333">}</span>
+<span style="color: #333333">}</span>
+</pre></td></tr></table></div><br>
+
+<p class="code_name" id="client">client.py</p>
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%"> 1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #888888">#</span>
+ <span style="color: #888888"># ECE 5725 final project</span>
+ <span style="color: #888888"># RPi Robot Mover</span>
+ <span style="color: #888888"># Fall 2021</span>
+ <span style="color: #888888"># Authors: Xu Hai (xh357), Yaqun Niu (yn232)</span>
+ <span style="color: #888888">#</span>
+ 
+ <span style="color: #888888">#!/usr/bin/env python3</span>
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">socket</span>
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">time</span>
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">os</span>
+ <span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">subprocess</span> <span style="color: #008800; font-weight: bold">import</span> call
+ 
+ <span style="color: #888888"># Specify the Android phone IP and port address</span>
+ HOST <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&#39;10.48.92.55&#39;</span>
+ PORT <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">8080</span>
+ 
+ <span style="color: #888888"># AF_INET is the Internet address family for IPv4</span>
+ <span style="color: #888888"># SOCK_STREAM indicates the protocol used is TCP</span>
+ s <span style="color: #333333">=</span> socket<span style="color: #333333">.</span>socket(socket<span style="color: #333333">.</span>AF_INET, socket<span style="color: #333333">.</span>SOCK_STREAM)
+ <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;Start to connect...&quot;</span>)
+ <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&#39;HOST: &#39;</span> <span style="color: #333333">+</span> HOST)
+ <span style="color: #007020">print</span>(PORT)
+ s<span style="color: #333333">.</span>connect((HOST, PORT))
+ <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;Connected!&quot;</span>)
+ 
+ cur_dir <span style="color: #333333">=</span> os<span style="color: #333333">.</span>getcwd()
+ 
+ <span style="color: #888888"># Make sure mode-switch signal file has been removed</span>
+ <span style="color: #008800; font-weight: bold">while</span> os<span style="color: #333333">.</span>path<span style="color: #333333">.</span>exists(cur_dir <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;/quit_manual.txt&quot;</span>):
+     os<span style="color: #333333">.</span>remove(cur_dir <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;/quit_manual.txt&quot;</span>)
+ 
+ time<span style="color: #333333">.</span>sleep(<span style="color: #0000DD; font-weight: bold">1</span>)
+ 
+ <span style="color: #888888"># Initial the mode flag</span>
+ manual_mode <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+ 
+ <span style="color: #888888"># Time out</span>
+ start_time <span style="color: #333333">=</span> time<span style="color: #333333">.</span>time()
+ 
+ <span style="color: #888888"># Keep receiving data from the server</span>
+ <span style="color: #008800; font-weight: bold">while</span> <span style="color: #0000DD; font-weight: bold">1</span>:
+     <span style="color: #008800; font-weight: bold">if</span> (time<span style="color: #333333">.</span>time() <span style="color: #333333">-</span> start_time <span style="color: #333333">&gt;=</span> <span style="color: #0000DD; font-weight: bold">300</span>):
+         <span style="color: #008800; font-weight: bold">break</span>
+     data <span style="color: #333333">=</span> s<span style="color: #333333">.</span>recv(<span style="color: #0000DD; font-weight: bold">1024</span>)
+     data <span style="color: #333333">=</span> <span style="color: #007020">repr</span>(data)
+     tmp <span style="color: #333333">=</span> data<span style="color: #333333">.</span>split(<span style="background-color: #fff0f0">&#39; &#39;</span>)
+ 
+     <span style="color: #888888"># Capture corresponding information from server raw data</span>
+     <span style="color: #008800; font-weight: bold">if</span> <span style="color: #007020">len</span>(tmp) <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">1</span>:
+         tmp <span style="color: #333333">=</span> tmp[<span style="color: #0000DD; font-weight: bold">0</span>]<span style="color: #333333">.</span>split(<span style="background-color: #fff0f0">&#39;=&#39;</span>)[<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>]
+ 
+         <span style="color: #888888"># Manual mode</span>
+         <span style="color: #008800; font-weight: bold">if</span> <span style="color: #007020">int</span>(tmp) <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">0</span>:
+ 
+             <span style="color: #888888"># First time to enter manual mode</span>
+             <span style="color: #008800; font-weight: bold">if</span> <span style="color: #000000; font-weight: bold">not</span> manual_mode:
+                 <span style="color: #008800; font-weight: bold">if</span> os<span style="color: #333333">.</span>path<span style="color: #333333">.</span>exists(cur_dir <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;/quit_manual.txt&quot;</span>):
+                     os<span style="color: #333333">.</span>remove(cur_dir <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;/quit_manual.txt&quot;</span>)
+                 <span style="color: #008800; font-weight: bold">if</span> os<span style="color: #333333">.</span>path<span style="color: #333333">.</span>exists(cur_dir <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;/commands.txt&quot;</span>):
+                     os<span style="color: #333333">.</span>remove(cur_dir <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;/commands.txt&quot;</span>)
+                 time<span style="color: #333333">.</span>sleep(<span style="color: #0000DD; font-weight: bold">1</span>)
+                 manual_mode <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                 command_file <span style="color: #333333">=</span> <span style="color: #007020">open</span>(<span style="background-color: #fff0f0">&quot;commands.txt&quot;</span>, <span style="background-color: #fff0f0">&quot;w&quot;</span>)
+                 call(<span style="background-color: #fff0f0">&quot;./start_manual.sh&quot;</span>, shell<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">True</span>)
+                 <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&#39;Start manual mode&#39;</span>)
+ 
+             <span style="color: #888888"># Writing data into the file read by the controller</span>
+             command_file<span style="color: #333333">.</span>write(data)
+             command_file<span style="color: #333333">.</span>flush()
+ 
+         <span style="color: #888888"># Auto mode</span>
+         <span style="color: #008800; font-weight: bold">elif</span> <span style="color: #007020">int</span>(tmp) <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">1</span>:
+             <span style="color: #008800; font-weight: bold">if</span> manual_mode:
+                 <span style="color: #008800; font-weight: bold">while</span> os<span style="color: #333333">.</span>path<span style="color: #333333">.</span>exists(cur_dir <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;/quit_auto.txt&quot;</span>):
+                     os<span style="color: #333333">.</span>remove(cur_dir <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;/quit_auto.txt&quot;</span>)
+                 time<span style="color: #333333">.</span>sleep(<span style="color: #0000DD; font-weight: bold">1</span>)
+ 
+                 <span style="color: #888888"># Quit manual mode</span>
+                 <span style="color: #888888"># Create the signal file to stop manual mode programs</span>
+                 manual_mode <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                 quit_manual <span style="color: #333333">=</span> <span style="color: #007020">open</span>(<span style="background-color: #fff0f0">&quot;quit_manual.txt&quot;</span>, <span style="background-color: #fff0f0">&quot;w&quot;</span>)
+                 quit_manual<span style="color: #333333">.</span>write(<span style="background-color: #fff0f0">&quot;Hello&quot;</span>)
+                 quit_manual<span style="color: #333333">.</span>close()
+ 
+                 <span style="color: #888888"># Start auto mode programs</span>
+                 call(<span style="background-color: #fff0f0">&quot;./start_auto.sh&quot;</span>, shell<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">True</span>)
+                 <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&#39;Start auto mode&#39;</span>)
+ 
+         <span style="color: #888888"># Quit</span>
+         <span style="color: #008800; font-weight: bold">elif</span> <span style="color: #007020">int</span>(tmp) <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">2</span>:
+ 
+             <span style="color: #888888"># Clear buffer files</span>
+             <span style="color: #888888"># Create the signal file to stop auto mode programs</span>
+             os<span style="color: #333333">.</span>remove(cur_dir <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;/quit_manual.txt&quot;</span>)
+             quit_auto <span style="color: #333333">=</span> <span style="color: #007020">open</span>(<span style="background-color: #fff0f0">&quot;quit_auto.txt&quot;</span>, <span style="background-color: #fff0f0">&quot;w&quot;</span>)
+             quit_auto<span style="color: #333333">.</span>write(<span style="background-color: #fff0f0">&quot;Hello&quot;</span>)
+             quit_auto<span style="color: #333333">.</span>close()
+             <span style="color: #008800; font-weight: bold">break</span>
+ </pre></td></tr></table></div><br>
+
+ <p class="code_name" id="pwm">pwm_hw_channel.py</p>
+ <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #888888">#</span>
+<span style="color: #888888"># ECE 5725 final project</span>
+<span style="color: #888888"># RPi Robot Mover</span>
+<span style="color: #888888"># Fall 2021</span>
+<span style="color: #888888"># Authors: Xu Hai (xh357), Yaqun Niu (yn232)</span>
+<span style="color: #888888">#</span>
+
+<span style="color: #888888"># Manual mode controller</span>
+
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">time</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">RPi.GPIO</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">GPIO</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">pigpio</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">re</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">os</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">pygame.mixer</span>
+
+<span style="color: #888888"># Initialize GPIO settings</span>
+GPIO<span style="color: #333333">.</span>setmode(GPIO<span style="color: #333333">.</span>BCM)
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>OUT)
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>OUT)
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>OUT)
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>OUT)
+pi_hw<span style="color: #333333">=</span>pigpio<span style="color: #333333">.</span>pi()
+
+filename<span style="color: #333333">=</span><span style="background-color: #fff0f0">&quot;quit_manual.txt&quot;</span>
+
+<span style="color: #888888"># Initialize flags</span>
+go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+playmusic<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">True</span>
+
+<span style="color: #008800; font-weight: bold">try</span>:
+
+    <span style="color: #008800; font-weight: bold">while</span> <span style="color: #008800; font-weight: bold">True</span>:
+
+        <span style="color: #888888"># Check whether the use wants to switch to auto mode</span>
+        <span style="color: #008800; font-weight: bold">if</span> os<span style="color: #333333">.</span>path<span style="color: #333333">.</span>exists(filename):
+            pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>)
+            pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>)
+            pi_hw<span style="color: #333333">.</span>stop()
+            GPIO<span style="color: #333333">.</span>cleanup()
+            <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;quit&quot;</span>)
+            quit()
+
+        <span style="color: #888888"># Read commands from the server</span>
+        f <span style="color: #333333">=</span> <span style="color: #007020">open</span>(<span style="background-color: #fff0f0">&#39;./commands.txt&#39;</span>, <span style="background-color: #fff0f0">&#39;r&#39;</span>)<span style="color: #333333">.</span>read()
+        command <span style="color: #333333">=</span> f<span style="color: #333333">.</span>split(<span style="background-color: #fff0f0">&#39; &#39;</span>)
+
+        <span style="color: #888888"># Capture corresponding information from the server raw data</span>
+        <span style="color: #008800; font-weight: bold">if</span> <span style="color: #007020">len</span>(command) <span style="color: #333333">&gt;=</span> <span style="color: #0000DD; font-weight: bold">2</span>:
+            command <span style="color: #333333">=</span> command[<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">2</span>]<span style="color: #333333">.</span>split(<span style="background-color: #fff0f0">&#39;=&#39;</span>)
+            <span style="color: #008800; font-weight: bold">if</span> <span style="color: #007020">len</span>(command) <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">2</span>:
+                x_value <span style="color: #333333">=</span> <span style="color: #007020">float</span>(command[<span style="color: #0000DD; font-weight: bold">0</span>]<span style="color: #333333">.</span>split(<span style="background-color: #fff0f0">&quot;n&quot;</span>)[<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>]<span style="color: #333333">.</span>split(<span style="background-color: #fff0f0">&quot;&#39;&quot;</span>)[<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>])
+                y_value <span style="color: #333333">=</span> <span style="color: #007020">float</span>(command[<span style="color: #0000DD; font-weight: bold">1</span>])
+                z_value <span style="color: #333333">=</span> <span style="color: #007020">float</span>(command[<span style="color: #0000DD; font-weight: bold">2</span>])
+                manual_auto <span style="color: #333333">=</span> <span style="color: #007020">int</span>(command[<span style="color: #0000DD; font-weight: bold">3</span>])
+
+                <span style="color: #888888"># The commands is given based on the coordinate information of the accelerometer</span>
+                <span style="color: #888888"># Move forward</span>
+                <span style="color: #008800; font-weight: bold">if</span> <span style="color: #0000DD; font-weight: bold">2</span> <span style="color: #333333">&lt;</span> y_value <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">7</span> <span style="color: #000000; font-weight: bold">and</span> <span style="color: #0000DD; font-weight: bold">7</span> <span style="color: #333333">&lt;</span> z_value <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">10</span> <span style="color: #000000; font-weight: bold">and</span> go_forward:
+                    go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                    back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;forward&quot;</span>)
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">1000000</span>)
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">1000000</span>)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>HIGH)
+
+                <span style="color: #888888"># Move backward</span>
+                <span style="color: #008800; font-weight: bold">elif</span> <span style="color: #0000DD; font-weight: bold">8</span> <span style="color: #333333">&lt;</span> y_value <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">9</span> <span style="color: #000000; font-weight: bold">and</span> z_value <span style="color: #333333">&lt;</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">4</span> <span style="color: #000000; font-weight: bold">and</span> back_ward:
+                    go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                    Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;backward&quot;</span>)
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">1000000</span>)
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">1000000</span>)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>LOW)
+
+                <span style="color: #888888"># Turn left</span>
+                <span style="color: #008800; font-weight: bold">elif</span> x_value <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">4</span> <span style="color: #000000; font-weight: bold">and</span> Turn_left:
+                    go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                    Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;turn left&quot;</span>)
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">500000</span>)
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">500000</span>)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>HIGH)
+
+                <span style="color: #888888"># Turn right</span>
+                <span style="color: #008800; font-weight: bold">elif</span> x_value <span style="color: #333333">&lt;</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">4</span> <span style="color: #000000; font-weight: bold">and</span> Turn_right:
+                    go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                    stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;turn right&quot;</span>)
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">500000</span>)
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">500000</span>)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>LOW)
+
+                <span style="color: #888888"># Stop</span>
+                <span style="color: #008800; font-weight: bold">elif</span> <span style="color: #333333">-</span><span style="color: #6600EE; font-weight: bold">3.5</span> <span style="color: #333333">&lt;</span> x_value <span style="color: #333333">&lt;</span> <span style="color: #6600EE; font-weight: bold">3.5</span> <span style="color: #000000; font-weight: bold">and</span> <span style="color: #0000DD; font-weight: bold">8</span> <span style="color: #333333">&lt;</span> y_value <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">10</span> <span style="color: #000000; font-weight: bold">and</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">3</span> <span style="color: #333333">&lt;</span> z_value <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">5</span> <span style="color: #000000; font-weight: bold">and</span> stop:
+                    
+                    <span style="color: #888888"># In order to make it safe</span>
+                    <span style="color: #888888"># when the user first launch the program</span>
+                    <span style="color: #888888"># the user needs to first adjust the controller position</span>
+                    <span style="color: #888888"># to stop position to start controlling</span>
+                    <span style="color: #008800; font-weight: bold">if</span> playmusic:
+                        <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;Ready&quot;</span>)
+
+                        <span style="color: #888888"># Play the sound to inform the user the robot is ready to go</span>
+                        os<span style="color: #333333">.</span>system(<span style="background-color: #fff0f0">&quot;omxplayer &#39;./sound/safe_rule.mp3&#39;&quot;</span>)
+                    playmusic<span style="color: #333333">=</span><span style="color: #008800; font-weight: bold">False</span>
+                    <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;stop&quot;</span>)
+                    go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                    stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>)
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>)
+<span style="color: #008800; font-weight: bold">except</span> <span style="color: #FF0000; font-weight: bold">KeyboardInterrupt</span>:
+    <span style="color: #008800; font-weight: bold">pass</span>
+
+pi_hw<span style="color: #333333">.</span>stop()
+GPIO<span style="color: #333333">.</span>cleanup()
+</pre></td></tr></table></div><br>
+
+<p class="code_name" id="color">color_recognize_v2.py</p>
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%"> 1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #888888">#</span>
+ <span style="color: #888888"># ECE 5725 final project</span>
+ <span style="color: #888888"># RPi Robot Mover</span>
+ <span style="color: #888888"># Fall 2021</span>
+ <span style="color: #888888"># Authors: Xu Hai (xh357), Yaqun Niu (yn232)</span>
+ <span style="color: #888888">#</span>
+ 
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">cv2</span>
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">colorList</span>
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">picamera</span>
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">io</span>
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">os</span>
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">time</span>
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">threading</span>
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">numpy</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">np</span>
+ <span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">piecamera</span> <span style="color: #008800; font-weight: bold">import</span> PieCamera
+ <span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">pygame.mixer</span>
+ 
+ 
+ <span style="color: #888888"># Capture the main color in front of the camera for one frame</span>
+ <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">get_color</span>(frame):
+     hsv <span style="color: #333333">=</span> cv2<span style="color: #333333">.</span>cvtColor(frame, cv2<span style="color: #333333">.</span>COLOR_BGR2HSV)
+     maxsum <span style="color: #333333">=</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">100</span>
+     color <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">None</span>
+     color_dict <span style="color: #333333">=</span> colorList<span style="color: #333333">.</span>getColorList()
+ 
+     <span style="color: #888888"># Image process to get </span>
+     <span style="color: #008800; font-weight: bold">for</span> d <span style="color: #000000; font-weight: bold">in</span> color_dict:
+         mask <span style="color: #333333">=</span> cv2<span style="color: #333333">.</span>inRange(hsv, color_dict[d][<span style="color: #0000DD; font-weight: bold">0</span>], color_dict[d][<span style="color: #0000DD; font-weight: bold">1</span>])
+         cv2<span style="color: #333333">.</span>imwrite(d <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&#39;.jpg&#39;</span>, mask)
+         binary <span style="color: #333333">=</span> cv2<span style="color: #333333">.</span>threshold(mask, <span style="color: #0000DD; font-weight: bold">127</span>, <span style="color: #0000DD; font-weight: bold">255</span>, cv2<span style="color: #333333">.</span>THRESH_BINARY)[<span style="color: #0000DD; font-weight: bold">1</span>]
+         binary <span style="color: #333333">=</span> cv2<span style="color: #333333">.</span>dilate(binary, <span style="color: #008800; font-weight: bold">None</span>, iterations<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">2</span>)
+         cnts, h <span style="color: #333333">=</span> cv2<span style="color: #333333">.</span>findContours(binary<span style="color: #333333">.</span>copy(), cv2<span style="color: #333333">.</span>RETR_EXTERNAL, cv2<span style="color: #333333">.</span>CHAIN_APPROX_SIMPLE)[<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">2</span>:]
+         <span style="color: #007020">sum</span> <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+         <span style="color: #008800; font-weight: bold">for</span> c <span style="color: #000000; font-weight: bold">in</span> cnts:
+             <span style="color: #007020">sum</span> <span style="color: #333333">+=</span> cv2<span style="color: #333333">.</span>contourArea(c)
+         <span style="color: #008800; font-weight: bold">if</span> <span style="color: #007020">sum</span> <span style="color: #333333">&gt;</span> maxsum:
+             maxsum <span style="color: #333333">=</span> <span style="color: #007020">sum</span>
+             color <span style="color: #333333">=</span> d
+ 
+     <span style="color: #008800; font-weight: bold">return</span> color
+ 
+ 
+ <span style="color: #888888"># Get the hsv of the main color in front of the camera during the period</span>
+ <span style="color: #008800; font-weight: bold">def</span> <span style="color: #0066BB; font-weight: bold">get_hsv</span>():
+     <span style="color: #888888"># Load color hsv from a pre-built color list</span>
+     color_dict <span style="color: #333333">=</span> colorList<span style="color: #333333">.</span>getColorList()
+     camera <span style="color: #333333">=</span> PieCamera()
+     key <span style="color: #333333">=</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>
+     result_1 <span style="color: #333333">=</span> <span style="background-color: #fff0f0">&quot;None&quot;</span>
+     i <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+     same_color <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+ 
+     <span style="color: #888888"># Play the sound to inform the user</span>
+     <span style="color: #888888"># that the robot starts to capture the color</span>
+     pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>init()
+     pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>load(os<span style="color: #333333">.</span>getcwd() <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;/sound/test.wav&quot;</span>)
+     pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>play(<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>)
+     time<span style="color: #333333">.</span>sleep(<span style="color: #0000DD; font-weight: bold">1</span>)
+     pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>stop()
+ 
+     <span style="color: #888888"># Make sure the robot get the main color during the period</span>
+     <span style="color: #008800; font-weight: bold">while</span> key <span style="color: #333333">==</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>:
+         ret, frame <span style="color: #333333">=</span> camera<span style="color: #333333">.</span>read()
+         <span style="color: #008800; font-weight: bold">if</span> ret <span style="color: #000000; font-weight: bold">is</span> <span style="color: #008800; font-weight: bold">True</span> <span style="color: #000000; font-weight: bold">and</span> same_color:
+             result <span style="color: #333333">=</span> get_color(frame)
+             <span style="color: #008800; font-weight: bold">if</span> result <span style="color: #333333">==</span> result_1:
+                 i <span style="color: #333333">+=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+                 <span style="color: #008800; font-weight: bold">if</span> i <span style="color: #333333">&gt;=</span> <span style="color: #0000DD; font-weight: bold">50</span>:
+                     same_color <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                     <span style="color: #007020">print</span>(result)
+ 
+                     <span style="color: #888888"># Play the sound to inform the user</span>
+                     <span style="color: #888888"># that the robot has captured the color</span>
+                     pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>load(os<span style="color: #333333">.</span>getcwd() <span style="color: #333333">+</span> <span style="background-color: #fff0f0">&quot;/sound/success.wav&quot;</span>)
+                     pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>play(<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>)
+                     time<span style="color: #333333">.</span>sleep(<span style="color: #0000DD; font-weight: bold">2</span>)
+                     pygame<span style="color: #333333">.</span>mixer<span style="color: #333333">.</span>music<span style="color: #333333">.</span>stop()
+                     <span style="color: #008800; font-weight: bold">break</span>
+             <span style="color: #008800; font-weight: bold">else</span>:
+                 i <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>
+             result_1 <span style="color: #333333">=</span> result
+ 
+     <span style="color: #888888"># Close the camera to release the resource</span>
+     camera<span style="color: #333333">.</span>close()
+     <span style="color: #008800; font-weight: bold">return</span> result
+ </pre></td></tr></table></div><br>
+ 
+ <p class="code_name" id="draw">draw_box_3.py</p>
+ <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #888888">#</span>
+<span style="color: #888888"># ECE 5725 final project</span>
+<span style="color: #888888"># RPi Robot Mover</span>
+<span style="color: #888888"># Fall 2021</span>
+<span style="color: #888888"># Authors: Xu Hai (xh357), Yaqun Niu (yn232)</span>
+<span style="color: #888888">#</span>
+
+<span style="color: #888888"># Auto mode controller</span>
+
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">cv2</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">numpy</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">np</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">color_recognize_v2</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">piecamera</span> <span style="color: #008800; font-weight: bold">import</span> PieCamera
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">time</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">RPi.GPIO</span> <span style="color: #008800; font-weight: bold">as</span> <span style="color: #0e84b5; font-weight: bold">GPIO</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">pigpio</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">re</span>
+<span style="color: #008800; font-weight: bold">import</span> <span style="color: #0e84b5; font-weight: bold">os</span>
+
+<span style="color: #888888"># Initialize GPIO settings</span>
+GPIO<span style="color: #333333">.</span>setmode(GPIO<span style="color: #333333">.</span>BCM)
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>OUT)
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>OUT)
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>OUT)
+GPIO<span style="color: #333333">.</span>setup(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>OUT)
+pi_hw<span style="color: #333333">=</span>pigpio<span style="color: #333333">.</span>pi()
+
+<span style="color: #888888"># Initialize flags</span>
+go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+
+<span style="color: #888888"># Get the main color in front of the camera during the period</span>
+result<span style="color: #333333">=</span>color_recognize_v2<span style="color: #333333">.</span>get_hsv()
+
+ball_color <span style="color: #333333">=</span> result
+
+<span style="color: #888888"># Define the hsv range of known colors</span>
+color_dist <span style="color: #333333">=</span> {<span style="background-color: #fff0f0">&#39;red&#39;</span>: {<span style="background-color: #fff0f0">&#39;Lower&#39;</span>: np<span style="color: #333333">.</span>array([<span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">60</span>, <span style="color: #0000DD; font-weight: bold">60</span>]), <span style="background-color: #fff0f0">&#39;Upper&#39;</span>: np<span style="color: #333333">.</span>array([<span style="color: #0000DD; font-weight: bold">6</span>, <span style="color: #0000DD; font-weight: bold">255</span>, <span style="color: #0000DD; font-weight: bold">255</span>])},
+              <span style="background-color: #fff0f0">&#39;blue&#39;</span>: {<span style="background-color: #fff0f0">&#39;Lower&#39;</span>: np<span style="color: #333333">.</span>array([<span style="color: #0000DD; font-weight: bold">100</span>, <span style="color: #0000DD; font-weight: bold">80</span>, <span style="color: #0000DD; font-weight: bold">46</span>]), <span style="background-color: #fff0f0">&#39;Upper&#39;</span>: np<span style="color: #333333">.</span>array([<span style="color: #0000DD; font-weight: bold">124</span>, <span style="color: #0000DD; font-weight: bold">255</span>, <span style="color: #0000DD; font-weight: bold">255</span>])},
+              <span style="background-color: #fff0f0">&#39;green&#39;</span>: {<span style="background-color: #fff0f0">&#39;Lower&#39;</span>: np<span style="color: #333333">.</span>array([<span style="color: #0000DD; font-weight: bold">35</span>, <span style="color: #0000DD; font-weight: bold">43</span>, <span style="color: #0000DD; font-weight: bold">35</span>]), <span style="background-color: #fff0f0">&#39;Upper&#39;</span>: np<span style="color: #333333">.</span>array([<span style="color: #0000DD; font-weight: bold">90</span>, <span style="color: #0000DD; font-weight: bold">255</span>, <span style="color: #0000DD; font-weight: bold">255</span>])},
+              <span style="background-color: #fff0f0">&#39;orange&#39;</span>: {<span style="background-color: #fff0f0">&#39;Lower&#39;</span>: np<span style="color: #333333">.</span>array([<span style="color: #0000DD; font-weight: bold">11</span>, <span style="color: #0000DD; font-weight: bold">43</span>, <span style="color: #0000DD; font-weight: bold">46</span>]), <span style="background-color: #fff0f0">&#39;Upper&#39;</span>: np<span style="color: #333333">.</span>array([<span style="color: #0000DD; font-weight: bold">34</span>, <span style="color: #0000DD; font-weight: bold">255</span>, <span style="color: #0000DD; font-weight: bold">255</span>])},
+              <span style="background-color: #fff0f0">&#39;black&#39;</span>: {<span style="background-color: #fff0f0">&#39;Lower&#39;</span>: np<span style="color: #333333">.</span>array([<span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>]), <span style="background-color: #fff0f0">&#39;Upper&#39;</span>: np<span style="color: #333333">.</span>array([<span style="color: #0000DD; font-weight: bold">180</span>, <span style="color: #0000DD; font-weight: bold">255</span>, <span style="color: #0000DD; font-weight: bold">46</span>])}
+              }
+camera <span style="color: #333333">=</span> PieCamera()
+
+i<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">0</span>
+key<span style="color: #333333">=-</span><span style="color: #0000DD; font-weight: bold">1</span>
+filename<span style="color: #333333">=</span><span style="background-color: #fff0f0">&quot;quit_auto.txt&quot;</span>
+<span style="color: #008800; font-weight: bold">while</span> key <span style="color: #333333">==</span> <span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">1</span>:
+    ret, frame <span style="color: #333333">=</span> camera<span style="color: #333333">.</span>read()
+    <span style="color: #008800; font-weight: bold">if</span> ret:
+        <span style="color: #008800; font-weight: bold">if</span> frame <span style="color: #000000; font-weight: bold">is</span> <span style="color: #000000; font-weight: bold">not</span> <span style="color: #008800; font-weight: bold">None</span>:
+            hsv <span style="color: #333333">=</span> cv2<span style="color: #333333">.</span>cvtColor(frame, cv2<span style="color: #333333">.</span>COLOR_BGR2HSV)
+            inRange_hsv <span style="color: #333333">=</span> cv2<span style="color: #333333">.</span>inRange(hsv, color_dist[ball_color][<span style="background-color: #fff0f0">&#39;Lower&#39;</span>], color_dist[ball_color][<span style="background-color: #fff0f0">&#39;Upper&#39;</span>])
+            
+            <span style="color: #888888"># Find objects with required color</span>
+            cnts, h <span style="color: #333333">=</span> cv2<span style="color: #333333">.</span>findContours(inRange_hsv<span style="color: #333333">.</span>copy(), cv2<span style="color: #333333">.</span>RETR_EXTERNAL, cv2<span style="color: #333333">.</span>CHAIN_APPROX_SIMPLE)[<span style="color: #333333">-</span><span style="color: #0000DD; font-weight: bold">2</span>:]
+
+            <span style="color: #888888"># Lose the target</span>
+            <span style="color: #008800; font-weight: bold">if</span> <span style="color: #007020">len</span>(cnts) <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">0</span>:
+                <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;lost object&quot;</span>)
+
+                <span style="color: #888888"># Keep turning left or right to find the target</span>
+                <span style="color: #008800; font-weight: bold">if</span> (i <span style="color: #333333">%</span> <span style="color: #0000DD; font-weight: bold">2</span>) <span style="color: #333333">==</span> <span style="color: #0000DD; font-weight: bold">0</span>:
+                    <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;turn left&quot;</span>)
+
+                    <span style="color: #888888"># Only half-speed to avoid missing the target</span>
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">500000</span>)
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">500000</span>)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                    i <span style="color: #333333">+=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+                    time<span style="color: #333333">.</span>sleep(<span style="color: #0000DD; font-weight: bold">1</span>)
+
+
+                <span style="color: #008800; font-weight: bold">else</span>:
+                    <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;turn right&quot;</span>)
+
+                    <span style="color: #888888"># Only half-speed to avoid missing the target</span>
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">500000</span>)
+                    pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">500000</span>)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>LOW)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                    GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>LOW)
+                    i <span style="color: #333333">+=</span> <span style="color: #0000DD; font-weight: bold">1</span>
+                    time<span style="color: #333333">.</span>sleep(<span style="color: #6600EE; font-weight: bold">0.5</span>)
+
+            <span style="color: #888888"># Find satisfied objects</span>
+            <span style="color: #008800; font-weight: bold">else</span>:
+                <span style="color: #888888"># Only follow the biggest object</span>
+                c <span style="color: #333333">=</span> <span style="color: #007020">max</span>(cnts, key<span style="color: #333333">=</span>cv2<span style="color: #333333">.</span>contourArea)
+                rect <span style="color: #333333">=</span> cv2<span style="color: #333333">.</span>minAreaRect(c)
+                box <span style="color: #333333">=</span> cv2<span style="color: #333333">.</span>boxPoints(rect)
+                area <span style="color: #333333">=</span> cv2<span style="color: #333333">.</span>contourArea(c)
+                
+                <span style="color: #888888"># Get the coordinate information of the target</span>
+                left_point_x <span style="color: #333333">=</span> np<span style="color: #333333">.</span>min(box[:, <span style="color: #0000DD; font-weight: bold">0</span>])
+                right_point_x <span style="color: #333333">=</span> np<span style="color: #333333">.</span>max(box[:, <span style="color: #0000DD; font-weight: bold">0</span>])
+                top_point_y <span style="color: #333333">=</span> np<span style="color: #333333">.</span>min(box[:, <span style="color: #0000DD; font-weight: bold">1</span>])
+                bottom_point_y <span style="color: #333333">=</span> np<span style="color: #333333">.</span>max(box[:, <span style="color: #0000DD; font-weight: bold">1</span>])
+
+                left_point_y <span style="color: #333333">=</span> box[:, <span style="color: #0000DD; font-weight: bold">1</span>][np<span style="color: #333333">.</span>where(box[:, <span style="color: #0000DD; font-weight: bold">0</span>] <span style="color: #333333">==</span> left_point_x)][<span style="color: #0000DD; font-weight: bold">0</span>]
+                right_point_y <span style="color: #333333">=</span> box[:, <span style="color: #0000DD; font-weight: bold">1</span>][np<span style="color: #333333">.</span>where(box[:, <span style="color: #0000DD; font-weight: bold">0</span>] <span style="color: #333333">==</span> right_point_x)][<span style="color: #0000DD; font-weight: bold">0</span>]
+                top_point_x <span style="color: #333333">=</span> box[:, <span style="color: #0000DD; font-weight: bold">0</span>][np<span style="color: #333333">.</span>where(box[:, <span style="color: #0000DD; font-weight: bold">1</span>] <span style="color: #333333">==</span> top_point_y)][<span style="color: #0000DD; font-weight: bold">0</span>]
+                bottom_point_x <span style="color: #333333">=</span> box[:, <span style="color: #0000DD; font-weight: bold">0</span>][np<span style="color: #333333">.</span>where(box[:, <span style="color: #0000DD; font-weight: bold">1</span>] <span style="color: #333333">==</span> bottom_point_y)][<span style="color: #0000DD; font-weight: bold">0</span>]
+                vertices <span style="color: #333333">=</span> np<span style="color: #333333">.</span>array(
+                    [[top_point_x, top_point_y], [bottom_point_x, bottom_point_y], [left_point_x, left_point_y],
+                     [right_point_x, right_point_y]])
+
+                <span style="color: #888888"># Simply version of center of mass</span>
+                center <span style="color: #333333">=</span> (vertices[<span style="color: #0000DD; font-weight: bold">2</span>][<span style="color: #0000DD; font-weight: bold">0</span>] <span style="color: #333333">+</span> vertices[<span style="color: #0000DD; font-weight: bold">3</span>][<span style="color: #0000DD; font-weight: bold">0</span>]) <span style="color: #333333">/</span> <span style="color: #0000DD; font-weight: bold">2</span>
+                
+                <span style="color: #888888"># Filter noise</span>
+                <span style="color: #888888"># Determine the distance by the area of the target</span>
+                <span style="color: #008800; font-weight: bold">if</span> area <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">800</span>:
+
+                    <span style="color: #888888"># Turn left</span>
+                    <span style="color: #008800; font-weight: bold">if</span> center <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">470</span>:
+                        go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                        Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;turn left&quot;</span>)
+                        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">750000</span>)
+                        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">750000</span>)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>LOW)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>LOW)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>HIGH)
+
+                    <span style="color: #888888"># Turn right</span>
+                    <span style="color: #008800; font-weight: bold">elif</span> center <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">25</span>:
+                        go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                        stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;turn right&quot;</span>)
+                        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">750000</span>)
+                        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">750000</span>)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>LOW)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>LOW)
+
+                    <span style="color: #888888"># Too far away from the target</span>
+                    <span style="color: #888888"># Move forward</span>
+                    <span style="color: #008800; font-weight: bold">if</span> area <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">5500</span> <span style="color: #000000; font-weight: bold">and</span> center <span style="color: #333333">&gt;=</span> <span style="color: #0000DD; font-weight: bold">25</span> <span style="color: #000000; font-weight: bold">and</span> center <span style="color: #333333">&lt;=</span> <span style="color: #0000DD; font-weight: bold">470</span> <span style="color: #000000; font-weight: bold">and</span> go_forward:
+                        go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                        back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;forward&quot;</span>)
+                        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">750000</span>)
+                        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">750000</span>)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>LOW)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>LOW)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>HIGH)
+
+                    <span style="color: #888888"># Stop</span>
+                    <span style="color: #008800; font-weight: bold">elif</span> <span style="color: #0000DD; font-weight: bold">5500</span> <span style="color: #333333">&lt;</span> area <span style="color: #333333">&lt;</span> <span style="color: #0000DD; font-weight: bold">7500</span> <span style="color: #000000; font-weight: bold">and</span> center <span style="color: #333333">&gt;=</span> <span style="color: #0000DD; font-weight: bold">25</span> <span style="color: #000000; font-weight: bold">and</span> center <span style="color: #333333">&lt;=</span> <span style="color: #0000DD; font-weight: bold">470</span> <span style="color: #000000; font-weight: bold">and</span> stop:
+                        go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                        <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;stop&quot;</span>)
+                        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>)
+                        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>)
+
+                    <span style="color: #888888"># Too close to the target</span>
+                    <span style="color: #888888"># Move backward</span>
+                    <span style="color: #008800; font-weight: bold">elif</span> area <span style="color: #333333">&gt;</span> <span style="color: #0000DD; font-weight: bold">7500</span> <span style="color: #000000; font-weight: bold">and</span> center <span style="color: #333333">&gt;=</span> <span style="color: #0000DD; font-weight: bold">25</span> <span style="color: #000000; font-weight: bold">and</span> center <span style="color: #333333">&lt;=</span> <span style="color: #0000DD; font-weight: bold">470</span> <span style="color: #000000; font-weight: bold">and</span> back_ward:
+                        go_forward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        back_ward <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">False</span>
+                        Turn_left <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        Turn_right <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        stop <span style="color: #333333">=</span> <span style="color: #008800; font-weight: bold">True</span>
+                        <span style="color: #007020">print</span>(<span style="background-color: #fff0f0">&quot;backward&quot;</span>)
+                        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">750000</span>)
+                        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">50</span>, <span style="color: #0000DD; font-weight: bold">750000</span>)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">5</span>, GPIO<span style="color: #333333">.</span>LOW)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">6</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">22</span>, GPIO<span style="color: #333333">.</span>HIGH)
+                        GPIO<span style="color: #333333">.</span>output(<span style="color: #0000DD; font-weight: bold">27</span>, GPIO<span style="color: #333333">.</span>LOW)
+
+    <span style="color: #888888"># Check whether the user wants to quit the program</span>
+    <span style="color: #008800; font-weight: bold">if</span> os<span style="color: #333333">.</span>path<span style="color: #333333">.</span>exists(filename):
+        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">13</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>)
+        pi_hw<span style="color: #333333">.</span>hardware_PWM(<span style="color: #0000DD; font-weight: bold">12</span>, <span style="color: #0000DD; font-weight: bold">0</span>, <span style="color: #0000DD; font-weight: bold">0</span>)
+        pi_hw<span style="color: #333333">.</span>stop()
+        GPIO<span style="color: #333333">.</span>cleanup()
+        camera<span style="color: #333333">.</span>close()
+        quit()
+
+
+pi_hw<span style="color: #333333">.</span>stop()
+GPIO<span style="color: #333333">.</span>cleanup()
+</pre></td></tr></table></div>
+
+ 
       </div>
 
     </div><!-- /.container -->
